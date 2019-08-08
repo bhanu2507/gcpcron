@@ -7,33 +7,24 @@ from lxml import etree
 from StringIO import StringIO
 
 class UrlPostHandler(webapp2.RequestHandler):
-    """ def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write('Hello, World!') """
-    """ Demonstrates an HTTP POST form query using urlfetch"""
-
-    form_fields = {
-        'searchJob': 'angular'
-    }
-
     def get(self):
-        # [START urlfetch-post]
+        # [START urlfetch-get]
         try:
-            form_data = urllib.urlencode(UrlPostHandler.form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
                 url='https://www.naukri.com/angular-jobs-in-hyderabad',
-                payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)
             parser = etree.HTMLParser() 
-            tree   = etree.parse(StringIO(result.content), parser)   
-            t = etree.tostring(tree.getroot(),pretty_print=True, method="html") 
-
-            self.response.write(tree.find(".//title").text)
-            logging.info(tree.find('.//title').text)
+            tree   = etree.parse(StringIO(result.content), parser)      
+            if result.status_code == 200:
+                self.response.write(result.content)
+                logging.info(tree.find('.//title').text.split("-")[1].split(" ")[1].strip())
+            else:
+                self.response.status_code = result.status_code
         except urlfetch.Error:
-            logging.exception('Caught exception fetching url')  
+            logging.exception('Caught exception fetching url')
+        # [END urlfetch-get] 
       
 
 app = webapp2.WSGIApplication([
