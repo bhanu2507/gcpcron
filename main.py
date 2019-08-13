@@ -45,7 +45,7 @@ class UrlPostHandler(webapp2.RequestHandler):
         try:
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://www.naukri.com/angular-jobs-in-hyderabad',
+                url='https://www.naukri.com/vue-jobs-in-hyderabad',
                 method=urlfetch.POST,
                 headers=headers)
             parser = etree.HTMLParser() 
@@ -55,7 +55,7 @@ class UrlPostHandler(webapp2.RequestHandler):
                 logging.info(tree.find('.//title').text.split("-")[1].split(" ")[1].strip())
                 db = connect_to_cloudsql()
                 cursor = db.cursor()
-                cursor.execute("INSERT INTO `cityjobs`.`jobtrack`(`tech`, `city`, `logdate`, `count`) VALUES ('" + "angular" +"', '" + "hyderabad" +"', '" + datetime.today().strftime('%Y-%m-%d') + "', '" + tree.find('.//title').text.split("-")[1].split(" ")[1].strip() + "');")
+                cursor.execute("INSERT INTO `cityjobs`.`jobtrack`(`tech`, `city`, `logdate`, `count`) VALUES ('" + "vue" +"', '" + "hyderabad" +"', '" + datetime.today().strftime('%Y-%m-%d') + "', '" + tree.find('.//title').text.split("-")[1].split(" ")[1].strip() + "');")
                 db.commit()
                 cursor.close()
                 db.close()
@@ -67,5 +67,5 @@ class UrlPostHandler(webapp2.RequestHandler):
       
 
 app = webapp2.WSGIApplication([
-    ('/', UrlPostHandler),
+    ('/vue', UrlPostHandler),
 ], debug=True)

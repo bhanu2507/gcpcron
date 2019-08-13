@@ -1,5 +1,13 @@
 cron:
-- description: "scrape job"
-  url: /
-  target: beta
+- description: "angular scrape job"
+  url: /angular
+  target: angular-scrape
   schedule: every 24 hours
+- description: "react scrape job"
+  url: /react
+  target: react-scrape
+  schedule: every 24 hours  
+- description: "vue scrape job"
+  url: /vue
+  target: vue-scrape
+  schedule: every 24 hours    
