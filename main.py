@@ -7,6 +7,7 @@ from lxml import etree
 from StringIO import StringIO
 import os
 import MySQLdb
+from datetime import datetime
 
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
@@ -54,7 +55,7 @@ class UrlPostHandler(webapp2.RequestHandler):
                 logging.info(tree.find('.//title').text.split("-")[1].split(" ")[1].strip())
                 db = connect_to_cloudsql()
                 cursor = db.cursor()
-                cursor.execute("INSERT INTO `cityjobs`.`jobtrack`(`tech`, `city`, `logdate`, `count`) VALUES ('" + "angular" +"', '" + "hyderabad" +"', '" + "2019-08-09" + "', '" + tree.find('.//title').text.split("-")[1].split(" ")[1].strip() + "');")
+                cursor.execute("INSERT INTO `cityjobs`.`jobtrack`(`tech`, `city`, `logdate`, `count`) VALUES ('" + "angular" +"', '" + "hyderabad" +"', '" + datetime.today().strftime('%Y-%m-%d') + "', '" + tree.find('.//title').text.split("-")[1].split(" ")[1].strip() + "');")
                 db.commit()
                 cursor.close()
                 db.close()
